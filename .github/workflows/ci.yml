@@ -27,7 +27,8 @@ jobs:
           cd mock-server
           npm ci
           npm run build
-          npm run start
+          nohup npm run start & # Run the mock server in the background
+          cd ..
 
       - name: Wait for mock server to be ready
         run: |
