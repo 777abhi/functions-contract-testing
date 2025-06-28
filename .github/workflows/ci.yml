@@ -61,6 +61,11 @@ jobs:
             http://localhost:3000/api/users
           echo "All mock server tests passed!"
 
+      - name: Install Azure Functions Core Tools
+        run: |
+          echo "Installing Azure Functions Core Tools..."
+          npm install -g azure-functions-core-tools@4 --unsafe-perm
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
