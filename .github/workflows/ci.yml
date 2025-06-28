@@ -19,7 +19,7 @@ jobs:
         echo "Starting mock server..."
         cd mock-server
         npm run build
-        npm run dev &
+        npm run start
         cd ..
 
     - name: Wait for mock server to be ready
