@@ -1,4 +1,4 @@
-name: Deploy and Test
+name: Live Server and Test
 
 on:
   push:
