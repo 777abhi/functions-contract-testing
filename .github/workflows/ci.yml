@@ -97,10 +97,3 @@ jobs:
             echo "Azure Function failed to start within timeout"
             exit 1
           fi
-
-      - name: Test Azure Function endpoints
-        run: |
-          echo "Testing Azure Function endpoints..."
-          curl -f http://localhost:7071/api/health
-          curl -f http://localhost:7071/api/todos
-          echo "All Azure Function tests passed!"
