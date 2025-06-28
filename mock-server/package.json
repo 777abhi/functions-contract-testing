@@ -7,9 +7,7 @@
       "build": "tsc",
       "start": "node dist/server.js",
       "dev": "ts-node src/server.ts",
-      "watch": "nodemon src/server.ts",
-      "clean": "rimraf dist",
-      "prebuild": "npm run clean"
+      "watch": "nodemon src/server.ts"
     },
     "keywords": ["mock", "server", "nodejs", "typescript"],
     "author": "Abhinav Sharma",
