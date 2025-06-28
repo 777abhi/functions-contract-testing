@@ -11,6 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Define environment variables
+        run: |
+          echo "Defining environment variables..."
+          echo "MOCK_SERVER_URL=http://localhost:3000" >> $GITHUB_ENV
+          echo "AZURE_FUNCTION_URL=http://localhost:7071" >> $GITHUB_ENV
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -35,7 +41,7 @@ jobs:
           echo "Waiting for mock server to be ready..."
           timeout=120
           while [ $timeout -gt 0 ]; do
-            if curl -f http://localhost:3000/health; then
+            if curl -f $MOCK_SERVER_URL/health; then
               echo "Mock server is ready!"
               break
             fi
@@ -52,13 +58,13 @@ jobs:
       - name: Test mock server endpoints
         run: |
           echo "Testing mock server endpoints..."
-          curl -f http://localhost:3000/health
-          curl -f http://localhost:3000/api/todos
-          curl -f http://localhost:3000/api/products
-          curl -f http://localhost:3000/api/orders
+          curl -f $MOCK_SERVER_URL/health
+          curl -f $MOCK_SERVER_URL/api/todos
+          curl -f $MOCK_SERVER_URL/api/products
+          curl -f $MOCK_SERVER_URL/api/orders
           curl -X POST -H "Content-Type: application/json" \
             -d '{"name":"Test User","email":"test@example.com"}' \
-            http://localhost:3000/api/users
+            $MOCK_SERVER_URL/api/users
           echo "All mock server tests passed!"
 
       - name: Install Azure Functions Core Tools
@@ -76,7 +82,7 @@ jobs:
           echo "Starting Azure Function..."
           cd SimpleAzureFunction
           dotnet build
-            API_URL=http://localhost:3000/api/todos func start --dotnet-isolated &
+          API_URL=$MOCK_SERVER_URL/api/todos func start --dotnet-isolated &
           cd ..
 
       - name: Wait for Azure Function to be ready
@@ -84,7 +90,7 @@ jobs:
           echo "Waiting for Azure Function to be ready..."
           timeout=120
           while [ $timeout -gt 0 ]; do
-            if curl -f http://localhost:7071/api/GetPublicApiData; then
+            if curl -f $AZURE_FUNCTION_URL/api/GetPublicApiData; then
               echo "Azure Function is ready!"
               break
             fi
