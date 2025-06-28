@@ -1,6 +1,6 @@
-# functions-contract-testing
+# Functions Contract Testing: Seamless API Integration Across CI/CD Environments
 
-Test functions orchestration that is accessing public APIs when run on CD and mocked APIs when running on CI.
+Test functions orchestration to ensure seamless integration with APIs. When running on CI, the mock server fulfills the responses, simulating the behavior of the actual service. When running on CD, the application connects to the actual public APIs.
 
 ## Mock Service URL
 
@@ -31,17 +31,21 @@ From mocked server: <http://localhost:3000/todos>
    npm install
    ```
 
-3. Start the mock server:
+3. Build the project:
 
    ```bash
-   npm run start:mock
+   npm run build
    ```
 
-4. Run the application:
+   This command compiles the source code and prepares the project for execution.
+
+4. Start the application:
 
    ```bash
-   npm start
+   npm run start
    ```
+
+   This command runs the application, connecting it to the appropriate APIs based on the environment (mocked APIs in CI or public APIs in CD).
 
 ## Testing
 
