@@ -47,16 +47,6 @@ From mocked server: <http://localhost:3000/todos>
 
    This command runs the application, connecting it to the appropriate APIs based on the environment (mocked APIs in CI or public APIs in CD).
 
-## Testing
-
-To run tests, use the following command:
-
-```bash
-npm test
-```
-
-Tests will verify the orchestration of functions using mocked APIs in CI and public APIs in CD environments.
-
 ## Contribution Guidelines
 
 1. Fork the repository.
