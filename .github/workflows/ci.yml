@@ -9,57 +9,54 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4    
-      
-    - name: Change to mock-server directory
-      run: cd mock-server
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 22
-        cache: 'npm'
+      - name: Change to mock-server directory
+        run: cd mock-server
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
 
+      - name: Build and start mock server
+        run: |
+          echo "Starting mock server..."
+          npm ci
+          npm run build
+          npm run start
 
-    - name: Build and start mock server
-      run: |
-        echo "Starting mock server..."
-        npm ci
-        npm run build
-        npm run start
+      - name: Wait for mock server to be ready
+        run: |
+          echo "Waiting for mock server to be ready..."
+          timeout=120
+          while [ $timeout -gt 0 ]; do
+            if curl -f http://localhost:3000/health; then
+              echo "Mock server is ready!"
+              break
+            fi
+            echo "Waiting for mock server... ($timeout seconds remaining)"
+            sleep 5
+            timeout=$((timeout-5))
+          done
 
-
-    - name: Wait for mock server to be ready
-      run: |
-        echo "Waiting for mock server to be ready..."
-        timeout=120
-        while [ $timeout -gt 0 ]; do
-          if curl -f http://localhost:3000/health; then
-            echo "Mock server is ready!"
-            break
+          if [ $timeout -le 0 ]; then
+            echo "Mock server failed to start within timeout"
+            exit 1
           fi
-          echo "Waiting for mock server... ($timeout seconds remaining)"
-          sleep 5
-          timeout=$((timeout-5))
-        done
-        
-        if [ $timeout -le 0 ]; then
-          echo "Mock server failed to start within timeout"
-          exit 1
-        fi
 
-    - name: Test mock server endpoints
-      run: |
-        echo "Testing mock server endpoints..."
-        curl -f http://localhost:3000/health
-        curl -f http://localhost:3000/api/todos
-        curl -f http://localhost:3000/api/products
-        curl -f http://localhost:3000/api/orders
-        curl -X POST -H "Content-Type: application/json" \
-          -d '{"name":"Test User","email":"test@example.com"}' \
-          http://localhost:3000/api/users
-        echo "All mock server tests passed!"
+      - name: Test mock server endpoints
+        run: |
+          echo "Testing mock server endpoints..."
+          curl -f http://localhost:3000/health
+          curl -f http://localhost:3000/api/todos
+          curl -f http://localhost:3000/api/products
+          curl -f http://localhost:3000/api/orders
+          curl -X POST -H "Content-Type: application/json" \
+            -d '{"name":"Test User","email":"test@example.com"}' \
+            http://localhost:3000/api/users
+          echo "All mock server tests passed!"
