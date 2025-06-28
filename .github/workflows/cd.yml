@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy-and-test:
-    uses: ./.github/workflows/common.yml
+    uses: 777abhi/lt-github-workflows/.github/workflows/mock-server-azure-function.yml@feat/add-reusable-workflow-for-mock-server-azure-function-testing
     with:
       SERVER_URL: https://jsonplaceholder.typicode.com
       AZURE_FUNCTION_URL: http://localhost:7071
