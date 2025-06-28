@@ -1,0 +1,54 @@
+name: Start Mock Server and Test
+
+on:
+  push:
+#     branches: [ main, develop ]
+#   pull_request:
+#     branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build and start mock server
+      run: |
+        echo "Starting mock server..."
+        cd mock-server
+        npm run build
+        npm run dev &
+        cd ..
+
+    - name: Wait for mock server to be ready
+      run: |
+        echo "Waiting for mock server to be ready..."
+        timeout=120
+        while [ $timeout -gt 0 ]; do
+          if curl -f http://localhost:3000/health; then
+            echo "Mock server is ready!"
+            break
+          fi
+          echo "Waiting for mock server... ($timeout seconds remaining)"
+          sleep 5
+          timeout=$((timeout-5))
+        done
+        
+        if [ $timeout -le 0 ]; then
+          echo "Mock server failed to start within timeout"
+          exit 1
+        fi
+
+    - name: Test mock server endpoints
+      run: |
+        echo "Testing mock server endpoints..."
+        curl -f http://localhost:3000/health
+        curl -f http://localhost:3000/api/todos
+        curl -f http://localhost:3000/api/products
+        curl -f http://localhost:3000/api/orders
+        curl -X POST -H "Content-Type: application/json" \
+          -d '{"name":"Test User","email":"test@example.com"}' \
+          http://localhost:3000/api/users
+        echo "All mock server tests passed!"
