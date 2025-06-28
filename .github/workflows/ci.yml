@@ -76,7 +76,7 @@ jobs:
           echo "Starting Azure Function..."
           cd SimpleAzureFunction
           dotnet build
-          API_URL=http://localhost:3000/api/todos func start &
+            API_URL=http://localhost:3000/api/todos func start --dotnet-isolated &
           cd ..
 
       - name: Wait for Azure Function to be ready
