@@ -60,3 +60,42 @@ jobs:
             -d '{"name":"Test User","email":"test@example.com"}' \
             http://localhost:3000/api/users
           echo "All mock server tests passed!"
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Build and start Azure Function
+        run: |
+          echo "Starting Azure Function..."
+          cd SimpleAzureFunction
+          dotnet build
+          API_URL=http://localhost:3000/api/todos func start &
+          cd ..
+
+      - name: Wait for Azure Function to be ready
+        run: |
+          echo "Waiting for Azure Function to be ready..."
+          timeout=120
+          while [ $timeout -gt 0 ]; do
+            if curl -f http://localhost:7071/api/health; then
+              echo "Azure Function is ready!"
+              break
+            fi
+            echo "Waiting for Azure Function... ($timeout seconds remaining)"
+            sleep 5
+            timeout=$((timeout-5))
+          done
+
+          if [ $timeout -le 0 ]; then
+            echo "Azure Function failed to start within timeout"
+            exit 1
+          fi
+
+      - name: Test Azure Function endpoints
+        run: |
+          echo "Testing Azure Function endpoints..."
+          curl -f http://localhost:7071/api/health
+          curl -f http://localhost:7071/api/todos
+          echo "All Azure Function tests passed!"
