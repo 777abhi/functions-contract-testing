@@ -14,9 +14,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Change to mock-server directory
-        run: cd mock-server
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -27,6 +24,7 @@ jobs:
       - name: Build and start mock server
         run: |
           echo "Starting mock server..."
+          cd mock-server
           npm ci
           npm run build
           npm run start
