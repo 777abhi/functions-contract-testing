@@ -84,7 +84,7 @@ jobs:
           echo "Waiting for Azure Function to be ready..."
           timeout=120
           while [ $timeout -gt 0 ]; do
-            if curl -f http://localhost:7071/api/health; then
+            if curl -f http://localhost:7071/api/GetPublicApiData; then
               echo "Azure Function is ready!"
               break
             fi
