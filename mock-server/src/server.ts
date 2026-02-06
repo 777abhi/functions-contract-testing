@@ -20,7 +20,7 @@ app.get('/health', (req: Request, res: Response) => {
 });
 
 // Mock API endpoints
-app.get('/api/todos', (req: Request, res: Response) => {
+const getTodos = (req: Request, res: Response) => {
   const todos = [
     {
       userId: 1,
@@ -42,7 +42,11 @@ app.get('/api/todos', (req: Request, res: Response) => {
     }
   ];
   res.json(todos);
-});
+};
+
+app.get('/api/todos', getTodos);
+app.get('/todos', getTodos);
+
 app.get('/api/users', (req: Request, res: Response) => {
   const users = [
     { id: 1, name: 'John Doe', email: 'john@example.com' },
