@@ -29,6 +29,30 @@ app.get('/api/health', (req: Request, res: Response) => {
 });
 
 // Mock API endpoints
+app.get('/todos', (req: Request, res: Response) => {
+  const todos = [
+    {
+      userId: 1,
+      id: 1,
+      title: "delectus aut autem",
+      completed: false
+    },
+    {
+      userId: 1,
+      id: 2,
+      title: "quis ut nam facilis et officia qui",
+      completed: false
+    },
+    {
+      userId: 1,
+      id: 3,
+      title: "fugiat veniam minus",
+      completed: false
+    }
+  ];
+  res.json(todos);
+});
+
 app.get('/api/todos', (req: Request, res: Response) => {
   const todos = [
     {
