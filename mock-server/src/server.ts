@@ -19,6 +19,15 @@ app.get('/health', (req: Request, res: Response) => {
   });
 });
 
+// Alias for health check to support SERVER_URL with /api base path
+app.get('/api/health', (req: Request, res: Response) => {
+  res.json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
+
 // Mock API endpoints
 app.get('/api/todos', (req: Request, res: Response) => {
   const todos = [
