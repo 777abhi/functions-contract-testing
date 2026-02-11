@@ -7,7 +7,12 @@ This project demonstrates a robust pattern for testing Azure Functions with exte
 The project currently implements the following features across its two main components:
 
 ### 1. Azure Function (`SimpleAzureFunction`)
-*   **HttpTrigger Function**: Implements `GetPublicApiData`, an HTTP-triggered function that acts as a gateway/proxy.
+*   **HttpTrigger Functions**:
+    *   `GetTodos`: Fetches all todos with query parameter filtering support.
+    *   `GetTodoById`: Fetches a single todo by ID.
+    *   `CreateTodo`: Creates a new todo item (POST).
+    *   `UpdateTodo`: Updates an existing todo item (PUT).
+    *   `DeleteTodo`: Deletes a todo item (DELETE).
 *   **Environment-Aware Configuration**: Uses `API_URL` environment variable to switch between the Mock Server and the real API without code changes.
 *   **Error Handling**: Robust error handling for upstream API failures (Bad Gateway) and internal exceptions (Internal Server Error).
 *   **Dependency Injection**: Uses `IHttpClientFactory` for efficient HTTP connection pooling and management.
@@ -28,26 +33,26 @@ The project currently implements the following features across its two main comp
 
 We plan to iteratively enhance the project with the following 20 features:
 
-1.  **Get Todo by ID**: Enhance Azure Function to support fetching a single todo item by ID.
-2.  **Filter Todos**: Add query parameter support to filter todos in the Azure Function proxy.
-3.  **Create Todo Function**: Add a new Azure Function to create a todo item (POST).
-4.  **Update Todo Function**: Add a new Azure Function to update a todo item (PUT).
-5.  **Delete Todo Function**: Add a new Azure Function to delete a todo item (DELETE).
-6.  **User Proxy Function**: Create an Azure Function to retrieve users from the upstream API.
-7.  **Product Proxy Function**: Create an Azure Function to retrieve products.
-8.  **Order Proxy Function**: Create an Azure Function to retrieve orders.
-9.  **Global Exception Handler**: Implement a centralized exception handling middleware in the Azure Functions.
-10. **Structured Logging**: Upgrade logging to use structured JSON format for better observability in tools like Application Insights.
-11. **Resilience Policies**: Implement retry and circuit breaker patterns using Polly in the Azure Function.
-12. **Response Caching**: Add in-memory caching to the Azure Function to reduce upstream calls for static data.
-13. **Mock Server Latency Simulation**: Add a feature to the mock server to simulate API delays via headers or config.
-14. **Mock Server Error Simulation**: Add a feature to the mock server to randomly trigger 500 errors for robustness testing.
-15. **Request Validation**: Implement FluentValidation in the Azure Function to strictly validate incoming requests.
-16. **OpenAPI Integration**: Integrate Swagger/OpenAPI to automatically document the Azure Functions.
-17. **Key Vault Integration**: Securely store and retrieve secrets (like API keys) using Azure Key Vault.
-18. **Automated Unit Tests**: Add a unit test project using xUnit and Moq to test function logic in isolation.
-19. **Integration Test Suite**: Add a suite of integration tests that verify the end-to-end flow against the mock server.
-20. **Containerization**: Create Dockerfiles for both the Azure Function and the Mock Server to facilitate container-based deployment.
+1.  **User Proxy Function**: Create an Azure Function to retrieve users from the upstream API.
+2.  **Product Proxy Function**: Create an Azure Function to retrieve products.
+3.  **Order Proxy Function**: Create an Azure Function to retrieve orders.
+4.  **Global Exception Handler**: Implement a centralized exception handling middleware in the Azure Functions.
+5.  **Structured Logging**: Upgrade logging to use structured JSON format for better observability in tools like Application Insights.
+6.  **Resilience Policies**: Implement retry and circuit breaker patterns using Polly in the Azure Function.
+7.  **Response Caching**: Add in-memory caching to the Azure Function to reduce upstream calls for static data.
+8.  **Mock Server Latency Simulation**: Add a feature to the mock server to simulate API delays via headers or config.
+9.  **Mock Server Error Simulation**: Add a feature to the mock server to randomly trigger 500 errors for robustness testing.
+10. **Request Validation**: Implement FluentValidation in the Azure Function to strictly validate incoming requests.
+11. **OpenAPI Integration**: Integrate Swagger/OpenAPI to automatically document the Azure Functions.
+12. **Key Vault Integration**: Securely store and retrieve secrets (like API keys) using Azure Key Vault.
+13. **Automated Unit Tests**: Add a unit test project using xUnit and Moq to test function logic in isolation.
+14. **Integration Test Suite**: Add a suite of integration tests that verify the end-to-end flow against the mock server.
+15. **Containerization**: Create Dockerfiles for both the Azure Function and the Mock Server to facilitate container-based deployment.
+16. **Authentication**: Add JWT authentication to the Azure Function to secure endpoints.
+17. **Rate Limiting**: Implement rate limiting in the Azure Function to prevent abuse.
+18. **Telemetry**: Add Application Insights telemetry for performance monitoring and diagnostics.
+19. **Performance Testing**: Add a load testing script (e.g., k6) to benchmark the function performance.
+20. **Dependency Updates**: Configure Dependabot or Renovate to automate dependency updates.
 
 ## Setup Instructions
 
