@@ -70,6 +70,14 @@ namespace SimpleAzureFunction
             }
         }
 
+        [Function("GetPublicApiData")]
+        public async Task<HttpResponseData> RunLegacy(
+            [HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
+        {
+            _logger.LogInformation("C# HTTP trigger function processed a request (legacy endpoint).");
+            return await Run(req);
+        }
+
         [Function("CreateTodo")]
         public async Task<HttpResponseData> CreateTodo(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "todos")] HttpRequestData req)
